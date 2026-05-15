@@ -9,7 +9,7 @@ fps = 30
 
 pygame.init()
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("My game")
+pygame.display.set_caption("Drunkard")
 clock = pygame.time.Clock()
 
 
