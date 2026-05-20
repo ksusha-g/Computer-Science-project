@@ -56,8 +56,9 @@ def create_deck_objects(sprite_sheet, card_width, card_height):
             value_idx = value_indices[value]
             card = Card(value, suit, rank, suit_idx, value_idx)
             card.set_sprite(sprite_sheet, card_width, card_height)
+
             card.set_sprite_back(suit_indices)
-            deck.append(card)
+
     
     return deck
 
