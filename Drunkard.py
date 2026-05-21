@@ -56,9 +56,8 @@ def create_deck_objects(sprite_sheet, card_width, card_height):
             value_idx = value_indices[value]
             card = Card(value, suit, rank, suit_idx, value_idx)
             card.set_sprite(sprite_sheet, card_width, card_height)
-
             card.set_sprite_back(suit_indices)
-
+            deck.append(card)
     
     return deck
 
@@ -70,6 +69,7 @@ half_deck = len(main_deck) // 2
 player_deck = main_deck[:half_deck].copy()
 computer_deck = main_deck[half_deck:].copy()
 
+
 pygame.init()
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Drunkard")
@@ -77,6 +77,8 @@ clock = pygame.time.Clock()
 
 
 running = True
+a = 100
+e = 0
 
 
 while running:
@@ -88,6 +90,17 @@ while running:
     screen.blit(card_image, (500, 290))
     screen.blit(card_back_red, (550, 290))
     screen.blit(card_back_black, (600, 290))
+
+    
+    
+
+    for i in player_deck:
+        if e < 6:
+            e += 1 
+            print(i)
+            screen.blit(i.sprite, (a, 290))
+            a+=100
+            
 
     pygame.display.flip()
     clock.tick(fps)
