@@ -36,32 +36,74 @@ class Card:
         else: 
             return card_back_red
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.value}{self.suit}"
 
 #for deck
 jokers = ["joker_red", "joker_black"]
 
-def create_deck_objects(sprite_sheet, card_width, card_height):
-    deck = []
-    suits = ["spades", "diamonds", "club", "hearts"]
-    suit_indices = {"spades": 0, "diamonds": 1, "club": 2, "hearts": 3}
-    values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
-    ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    value_indices = {"2": 1, "3": 2, "4": 3, "5": 4, "6": 5, "7": 6, "8": 7, "9": 8, "10": 9, "J": 10, "Q": 11, "K": 12, "A": 0}
-    for suit in suits:
-        suit_idx = suit_indices[suit]
-        for value in values:
-            rank = ranks[values.index(value)]
-            value_idx = value_indices[value]
-            card = Card(value, suit, rank, suit_idx, value_idx)
-            card.set_sprite(sprite_sheet, card_width, card_height)
-            card.set_sprite_back(suit_indices)
-            deck.append(card)
-    
-    return deck
 
-main_deck = create_deck_objects(sprite_sheet, card_width, card_height)
+class Deck:
+    def __init__(self):
+        self.sprite_sheet = sprite_sheet
+        self.card_width = card_width
+        self.card_height = card_height
+        self.deck = []
+        self.suits = ["spades", "diamonds", "club", "hearts"]
+        self.suit_indices = {"spades": 0, "diamonds": 1, "club": 2, "hearts": 3}
+        self.values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
+        self.ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+        self.value_indices = {"2": 1, "3": 2, "4": 3, "5": 4, "6": 5, "7": 6, "8": 7, "9": 8, "10": 9, "J": 10, "Q": 11, "K": 12, "A": 0}
+
+        self.create_deck_objects()
+
+    def create_deck_objects(self) -> list:
+        for suit in self.suits:
+            suit_idx = self.suit_indices[suit]
+            for value in self.values:
+                rank = self.ranks[self.values.index(value)]
+                value_idx = self.value_indices[value]
+                card = Card(value, suit, rank, suit_idx, value_idx)
+                card.set_sprite(sprite_sheet, card_width, card_height)
+                card.set_sprite_back(self.suit_indices)
+                self.deck.append(card)
+        
+        return self.deck
+        #self.shuffle()
+    
+    # def shuffle(self): 
+    #     random.shuffle(self.deck)
+    #     half_deck = len(self.deck) // 2
+    #     player_deck = self.deck[:half_deck].copy()
+    #     computer_deck = self.deck[half_deck:].copy()
+
+    #     return player_deck, computer_deck
+    
+    def get_card_str(self) -> list:
+        return [str(card) for card in self.deck]
+    
+#пока не буду удалять, кать, если тебе все понятно и больше это не нужно, удали пж
+# def create_deck_objects(sprite_sheet, card_width, card_height):
+#     deck = []
+#     suits = ["spades", "diamonds", "club", "hearts"]
+#     suit_indices = {"spades": 0, "diamonds": 1, "club": 2, "hearts": 3}
+#     values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
+#     ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+#     value_indices = {"2": 1, "3": 2, "4": 3, "5": 4, "6": 5, "7": 6, "8": 7, "9": 8, "10": 9, "J": 10, "Q": 11, "K": 12, "A": 0}
+#     for suit in suits:
+#         suit_idx = suit_indices[suit]
+#         for value in values:
+#             rank = ranks[values.index(value)]
+#             value_idx = value_indices[value]
+#             card = Card(value, suit, rank, suit_idx, value_idx)
+#             card.set_sprite(sprite_sheet, card_width, card_height)
+#             card.set_sprite_back(suit_indices)
+#             deck.append(card)
+    
+#     return deck
+
+new_deck = Deck()
+main_deck = new_deck.get_card_str()
 
 #random + 2 decks
 random.shuffle(main_deck)
@@ -94,12 +136,12 @@ while running:
     
     
 
-    for i in player_deck:
-        if e < 6:
-            e += 1 
-            print(i)
-            screen.blit(i.sprite, (a, 290))
-            a+=100
+    # for i in player_deck:
+    #     if e < 6:
+    #         e += 1 
+    #         print(i)
+    #         screen.blit(i.sprite, (a, 290))
+    #         a+=100
             
 
     pygame.display.flip()
