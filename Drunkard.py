@@ -56,8 +56,7 @@ class Card:
     def __str__(self) -> str:
         return f"{self.value}{self.suit}"
 
-#for deck
-jokers = ["joker_red", "joker_black"]
+
 
 class Deck:
     def __init__(self):
@@ -65,6 +64,7 @@ class Deck:
         self.card_width = card_width
         self.card_height = card_height
         self.deck = []
+        self.jokers = ["joker_red", "joker_black"]
         self.suits = ["spades", "diamonds", "club", "hearts"]
         self.suit_indices = {"spades": 0, "diamonds": 1, "club": 2, "hearts": 3}
         self.values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"]
@@ -73,7 +73,7 @@ class Deck:
         
         self.create_deck_objects()
     
-    def create_deck_objects(self) -> list:
+    def create_deck_objects(self):
         for suit in self.suits:
             suit_idx = self.suit_indices[suit]
             for value in self.values:
@@ -82,38 +82,84 @@ class Deck:
                 card = Card(value, suit, rank, suit_idx, value_idx)
                 card.set_sprite(sprite_sheet, card_width, card_height)
                 self.deck.append(card)
-        return self.deck
 
-new_deck = Deck()
-main_deck = new_deck.deck.copy()
+        self.shuffle()
+    
+    def shuffle(self):
+        random.shuffle(self.deck)
+        
 
-#перемешиваем
-random.shuffle(main_deck)
-half_deck = len(main_deck) // 2
-player_deck = main_deck[:half_deck].copy()
-computer_deck = main_deck[half_deck:].copy()
+    def divide(self):
+        half_deck = len(self.deck) // 2
+        player_deck = self.deck[:half_deck].copy()
+        computer_deck = self.deck[half_deck:].copy()
 
-#компьютер
-computer_cards = []
-total_computer_cards = min(9, len(computer_deck)) #поставила 9 карт, а не 6, потому что 6 занимают слишком мало места и не оч отображаются
-start_x = (width - (card_width + (total_computer_cards - 1) * 30)) // 2 
-computer_y = 50
-overlap_offset = 30 #расстояние между картами
+        return player_deck, computer_deck
+        
 
-for i in range(total_computer_cards):
-    card = computer_deck[i]
-    card.set_position(start_x + i * overlap_offset, computer_y)
-    computer_cards.append(card)
+class Table:
+    def __init__(self, player_deck, computer_deck) -> None:
+        self.player_deck = player_deck
+        self.computer_deck = computer_deck
+        self.computer_cards = []
+        self.player_cards = []
+        self.overlap_offset = 30 #расстояние между картами
 
-player_cards = []
-total_player_cards = min(9, len(player_deck))
-start_x = (width - (card_width + (total_player_cards - 1) * 30)) // 2  # Центрируем
-player_y = height - card_height - 50
+        self.total_computer_cards = min(9, len(self.computer_deck)) #поставила 9 карт, а не 6, потому что 6 занимают слишком мало места и не оч отображаются
+        self.start_x = (width - (card_width + (self.total_computer_cards - 1) * 30)) // 2
+        self.computer_y = 50
 
-for i in range(total_player_cards):
-    card = player_deck[i]
-    card.set_position(start_x + i * overlap_offset, player_y)
-    player_cards.append(card)
+        self.total_player_cards = min(9, len(self.player_deck))
+        self.start_x = (width - (card_width + (self.total_player_cards - 1) * 30)) // 2  # Центрируем
+        self.player_y = height - card_height - 50
+
+         
+
+    def drawable_computer_cards(self) -> list:
+        for i in range(self.total_computer_cards):
+            card = self.computer_deck[i]
+            card.set_position(self.start_x + i * self.overlap_offset, self.computer_y)
+            self.computer_cards.append(card)
+
+        return self.computer_cards
+    
+    def show_computer_cards(self):
+        for card in self.computer_cards:
+            card.draw(screen, show_back=False)
+    
+        #кол-во карт у компа (кол-во карт в колоде - кол-во отображаемых карт)
+        computer_remaining = len(computer_deck) - self.total_computer_cards
+        computer_text = f"x{computer_remaining}"
+        computer_text_surface = font.render(computer_text, True, (0, 0, 0))
+        computer_text_x = self.start_x - 60
+        computer_text_y = self.computer_y + card_height // 2 + 35
+        screen.blit(computer_text_surface, (computer_text_x, computer_text_y))
+    
+    def drawable_player_cards(self) -> list:
+        for i in range(self.total_player_cards):
+            card = self.player_deck[i]
+            card.set_position(self.start_x + i * self.overlap_offset, self.player_y)
+            self.player_cards.append(card)
+
+        return self.player_cards
+    
+    def show_player_cards(self):
+        for card in player_cards:
+            card.draw(screen, show_back=False)
+    
+        #кол-во карт игрока
+        player_remaining = len(player_deck) - self.total_player_cards
+        player_text = f"x{player_remaining}"
+        player_text_surface = font.render(player_text, True, (0, 0, 0))
+        player_text_x = self.start_x + 360
+        player_text_y = self.player_y + card_height // 2 + 35
+        screen.blit(player_text_surface, (player_text_x, player_text_y))
+
+my_deck = Deck()
+player_deck, computer_deck = my_deck.divide()
+game_table = Table(player_deck, computer_deck)
+computer_cards = game_table.drawable_computer_cards() 
+player_cards = game_table.drawable_player_cards() 
 
 #тут будем шрифт менять
 pygame.font.init()
@@ -159,28 +205,9 @@ while running:
                 dragged_card.rect.y = mouse_y + dragged_card.drag_offset_y
     
     screen.fill(background_color)
-    
-    for card in computer_cards:
-        card.draw(screen, show_back=False)
-    
-    #кол-во карт у компа (кол-во карт в колоде - кол-во отображаемых карт)
-    computer_remaining = len(computer_deck) - total_computer_cards
-    computer_text = f"x{computer_remaining}"
-    computer_text_surface = font.render(computer_text, True, (0, 0, 0))
-    computer_text_x = start_x - 60
-    computer_text_y = computer_y + card_height // 2 + 35
-    screen.blit(computer_text_surface, (computer_text_x, computer_text_y))
-    
-    for card in player_cards:
-        card.draw(screen, show_back=False)
-    
-    #кол-во карт игрока
-    player_remaining = len(player_deck) - total_player_cards
-    player_text = f"x{player_remaining}"
-    player_text_surface = font.render(player_text, True, (0, 0, 0))
-    player_text_x = start_x + 360
-    player_text_y = player_y + card_height // 2 + 35
-    screen.blit(player_text_surface, (player_text_x, player_text_y))
+
+    game_table.show_computer_cards()
+    game_table.show_player_cards()
     
     pygame.display.flip()
     clock.tick(fps)
