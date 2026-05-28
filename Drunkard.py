@@ -87,7 +87,6 @@ class Deck:
     
     def shuffle(self):
         random.shuffle(self.deck)
-        
 
     def divide(self):
         half_deck = len(self.deck) // 2
@@ -113,8 +112,6 @@ class Table:
         self.start_x = (width - (card_width + (self.total_player_cards - 1) * 30)) // 2  # Центрируем
         self.player_y = height - card_height - 50
 
-         
-
     def drawable_computer_cards(self) -> list:
         for i in range(self.total_computer_cards):
             card = self.computer_deck[i]
@@ -135,7 +132,7 @@ class Table:
         computer_text_y = self.computer_y + card_height // 2 + 35
         screen.blit(computer_text_surface, (computer_text_x, computer_text_y))
     
-    def drawable_player_cards(self) -> list:
+    def drawable_player_cards(self) -> list: 
         for i in range(self.total_player_cards):
             card = self.player_deck[i]
             card.set_position(self.start_x + i * self.overlap_offset, self.player_y)
@@ -203,6 +200,11 @@ while running:
                 mouse_x, mouse_y = event.pos
                 dragged_card.rect.x = mouse_x + dragged_card.drag_offset_x
                 dragged_card.rect.y = mouse_y + dragged_card.drag_offset_y
+
+                if dragged_card.rect.x > width - 100: dragged_card.rect.x = width - 100
+                if dragged_card.rect.x < 0: dragged_card.rect.x = 0
+                if dragged_card.rect.y < 0: dragged_card.rect.y = 0
+                if dragged_card.rect.y > height - 145: dragged_card.rect.y = height - 145
     
     screen.fill(background_color)
 
