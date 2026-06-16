@@ -1,7 +1,8 @@
 import pygame
 from typing import List, Tuple
-
 import random
+import os
+import math
 
 background_color = (255, 229, 236)
 width = 1060
@@ -15,6 +16,149 @@ card_height = sprite_sheet_height // 4
 card_image = sprite_sheet.subsurface((0, 0, card_width, card_height))
 card_back_red = sprite_sheet.subsurface((card_width * 14, card_height * 2, card_width, card_height))
 card_back_black = sprite_sheet.subsurface((card_width * 14, card_height * 3, card_width, card_height))
+
+class MusicButton:
+    def __init__(self, x: int, y: int, width: int, height: int, 
+                 idle_image: str, pushed_image: str, action: str):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.action = action
+        self.is_pushed = False
+        try:
+            self.idle_image = pygame.image.load(idle_image).convert_alpha()
+            self.idle_image = pygame.transform.scale(self.idle_image, (width, height))
+            self.pushed_image = pygame.image.load(pushed_image).convert_alpha()
+            self.pushed_image = pygame.transform.scale(self.pushed_image, (width, height))
+        except:
+            self.idle_image = pygame.Surface((width, height))
+            self.idle_image.fill((150, 150, 150))
+            self.pushed_image = pygame.Surface((width, height))
+            self.pushed_image.fill((100, 100, 100))
+        
+        self.current_image = self.idle_image
+        self.pressed_timer = 0
+
+    def draw(self, screen: pygame.Surface) -> None:
+        if self.is_pushed and pygame.time.get_ticks() - self.pressed_timer > 100:
+            self.is_pushed = False
+            self.current_image = self.idle_image
+        screen.blit(self.current_image, self.rect)
+
+    def handle_event(self, event: pygame.event.Event) -> bool:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                self.is_pushed = True
+                self.pressed_timer = pygame.time.get_ticks()
+                self.current_image = self.pushed_image
+                return True
+        return False
+    
+    def set_idle_image(self, image_path: str) -> None:
+        try:
+            self.idle_image = pygame.image.load(image_path).convert_alpha()
+            self.idle_image = pygame.transform.scale(self.idle_image, 
+                                                    (self.rect.width, self.rect.height))
+            if not self.is_pushed:
+                self.current_image = self.idle_image
+        except:
+            pass
+
+class SpeedButton:
+    def __init__(self, x: int, y: int, width: int, height: int, text: str, speed_multiplier: float):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.speed_multiplier = speed_multiplier
+        self.is_active = False
+        self.color_normal = (100, 100, 100)
+        self.color_hover = (150, 150, 150)
+        self.color_active = (255, 105, 180)
+        self.current_color = self.color_normal
+        self.font = pygame.font.SysFont(None, 28)
+
+    def draw(self, screen: pygame.Surface) -> None:
+        pygame.draw.rect(screen, self.current_color, self.rect, border_radius=5)
+        pygame.draw.rect(screen, (0, 0, 0), self.rect, 2, border_radius=5)
+        text_surface = self.font.render(self.text, True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=self.rect.center)
+        screen.blit(text_surface, text_rect)
+
+    def handle_event(self, event: pygame.event.Event) -> bool:
+        if event.type == pygame.MOUSEMOTION:
+            if self.rect.collidepoint(event.pos):
+                self.current_color = self.color_hover if not self.is_active else self.color_active
+            else:
+                self.current_color = self.color_active if self.is_active else self.color_normal
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                return True
+        return False
+
+    def set_active(self, active: bool) -> None:
+        self.is_active = active
+        self.current_color = self.color_active if active else self.color_normal
+
+class MusicPlayer:
+    def __init__(self):
+        self.tracks = ["BattleMech.mp3", "Cyberia.mp3", "Rise & Strike.mp3"]
+        self.current_track_index = 0
+        self.is_playing = False
+        self.is_paused = False
+        self.volume = 0.5
+        
+        pygame.mixer.init()
+        pygame.mixer.music.set_volume(self.volume)
+        
+        self.load_track(self.current_track_index)
+        self.play()
+    
+    def load_track(self, index: int) -> None:
+        try:
+            if os.path.exists(self.tracks[index]):
+                pygame.mixer.music.load(self.tracks[index])
+                self.current_track_index = index
+            else:
+                print(f"Файл {self.tracks[index]} не найден")
+        except Exception as e:
+            print(f"Ошибка загрузки трека: {e}")
+    
+    def play(self) -> None:
+        try:
+            pygame.mixer.music.play()
+            self.is_playing = True
+            self.is_paused = False
+        except Exception as e:
+            print(f"Ошибка воспроизведения: {e}")
+    
+    def pause(self) -> None:
+        if self.is_playing and not self.is_paused:
+            pygame.mixer.music.pause()
+            self.is_paused = True
+        elif self.is_paused:
+            pygame.mixer.music.unpause()
+            self.is_paused = False
+    
+    def next_track(self) -> None:
+        self.current_track_index = (self.current_track_index + 1) % len(self.tracks)
+        self.load_track(self.current_track_index)
+        if self.is_playing:
+            self.play()
+    
+    def prev_track(self) -> None:
+        self.current_track_index = (self.current_track_index - 1) % len(self.tracks)
+        self.load_track(self.current_track_index)
+        if self.is_playing:
+            self.play()
+    
+    def toggle_play_pause(self) -> None:
+        if not self.is_playing:
+            self.play()
+        else:
+            self.pause()
+    
+    def update_button_states(self, pause_button: 'MusicButton') -> None:
+        if self.is_playing and not self.is_paused:
+            pause_button.set_idle_image("Pause_Idle.png")
+        elif self.is_paused or not self.is_playing:
+            pause_button.set_idle_image("Play_Idle.png")
 
 class Card:
     def __init__(self, value: str, suit: str, rank: int, suit_index: int, value_index: int) -> None:
@@ -47,6 +191,11 @@ class Card:
         self.scale_animation_start = 0
         self.center_x = None
         self.center_y = None
+        
+        self.wave_offset = 0
+        self.base_x = 0
+        self.base_y = 0
+        self.enable_wave = True
 
     def set_sprite(self, sprite_sheet: pygame.Surface, card_width: int, card_height: int) -> None:
         x = self.value_index * card_width
@@ -57,6 +206,8 @@ class Card:
     def set_position(self, x: int, y: int) -> None:
         self.rect.x = x
         self.rect.y = y
+        self.base_x = x
+        self.base_y = y
 
     def start_animation(self, target_x: int, target_y: int, duration_ms: int) -> None:
         self.animation_start_x = self.rect.x
@@ -76,10 +227,10 @@ class Card:
     def is_scale_animation_finished(self) -> bool:
         return self.scale_animation_start == 0
 
-    def update_animation(self) -> None:
+    def update_animation(self, speed_multiplier: float = 1.0) -> None:
         if self.animation_duration > 0:
             current_time = pygame.time.get_ticks()
-            elapsed = current_time - self.animation_start_time
+            elapsed = (current_time - self.animation_start_time) * speed_multiplier
             self.animation_progress = min(1.0, elapsed / self.animation_duration)
             ease_progress = 1 - (1 - self.animation_progress) ** 2
 
@@ -89,10 +240,12 @@ class Card:
             if self.animation_progress >= 1.0:
                 self.animation_duration = 0
                 self.is_played = True
+                self.base_x = self.rect.x
+                self.base_y = self.rect.y
 
         if self.scale_animation_start > 0:
             current_time = pygame.time.get_ticks()
-            elapsed = current_time - self.scale_animation_start
+            elapsed = (current_time - self.scale_animation_start) * speed_multiplier
             scale_progress = min(1.0, elapsed / 500)
             ease_progress = 1 - (1 - scale_progress) ** 2
 
@@ -118,6 +271,13 @@ class Card:
                 self.center_x = None
                 self.center_y = None
 
+    #волна
+    def update_wave(self, time: float, index: int, total_cards: int, wave_amplitude: int, wave_speed: float) -> None:
+        if self.enable_wave and self.animation_duration == 0 and self.scale_animation_start == 0 and not self.dragging:
+            phase = (index / total_cards) * 2 * math.pi
+            wave_offset = math.sin(time * wave_speed + phase) * wave_amplitude
+            self.rect.y = self.base_y + wave_offset
+
     def is_animation_finished(self) -> bool:
         return self.animation_duration == 0 and self.is_played
 
@@ -129,13 +289,13 @@ class Card:
         return self.sprite
 
     def get_sprite_back(self, suit_indices: int) -> pygame.Surface:
-        if suit_indices in (0, 2):  # пики или трефы
+        if suit_indices in (0, 2):
             return card_back_black
-        else:  # червы или бубны
+        else:
             return card_back_red
 
-    def draw(self, screen: pygame.Surface, show_back: bool = False) -> None:
-        self.update_animation()
+    def draw(self, screen: pygame.Surface, show_back: bool = False, speed_multiplier: float = 1.0) -> None:
+        self.update_animation(speed_multiplier)
 
         if show_back or not self.is_face_up:
             back_sprite = self.get_sprite_back(self.suit_index)
@@ -186,7 +346,7 @@ class Table:
         self.computer_deck = computer_deck
         self.computer_cards: List[Card] = []
         self.player_cards: List[Card] = []
-        self.overlap_offset = 30
+        self.overlap_offset = 40  #увеличили расстояние между картами
         self.player_played_card = None
         self.computer_played_card = None
         self.computer_turn: bool = False
@@ -203,6 +363,13 @@ class Table:
         self.under_computer_y: int = self.computer_y
         self.under_player_x: int = width // 2 - card_width // 2
         self.under_player_y: int = self.player_y
+        self.speed_multiplier: float = 1.0
+        
+        #параметры волновой анимации
+        self.wave_time = 0
+        self.wave_amplitude = 8 #амплитуда волны в пикселях
+        self.wave_speed = 1.5 #скорость волны
+        
         self.refresh_decks()
 
     def refresh_decks(self) -> None:
@@ -215,6 +382,7 @@ class Table:
                 card = self.player_deck[start_index + i]
                 if card != self.player_played_card:
                     card.set_position(start_x_player + i * self.overlap_offset, self.player_y)
+                    card.enable_wave = True
                     if i == total_player - 1:
                         card.is_face_up = True
                     else:
@@ -230,21 +398,32 @@ class Table:
                 card = self.computer_deck[start_index + i]
                 if card != self.computer_played_card:
                     card.set_position(start_x_computer + i * self.overlap_offset, self.computer_y)
+                    card.enable_wave = False
                     card.is_face_up = False
                 self.computer_cards.append(card)
 
+    #волна
+    def update_wave_animation(self) -> None:
+        self.wave_time += 0.016 * self.speed_multiplier
+        #только у игрока
+        for i, card in enumerate(self.player_cards):
+            if card != self.player_played_card and card.animation_duration == 0 and not card.dragging:
+                card.update_wave(self.wave_time, i, len(self.player_cards), 
+                               self.wave_amplitude, self.wave_speed)
+
     def show_cards(self, screen: pygame.Surface) -> None:
+        self.update_wave_animation()
         font = pygame.font.SysFont(None, 36)
         for card in self.computer_cards:
             if card != self.computer_played_card:
-                card.draw(screen, show_back=True)
+                card.draw(screen, show_back=True, speed_multiplier=self.speed_multiplier)
         for card in self.player_cards:
             if card != self.player_played_card:
-                card.draw(screen, show_back=not card.is_face_up)
+                card.draw(screen, show_back=not card.is_face_up, speed_multiplier=self.speed_multiplier)
         if self.player_played_card:
-            self.player_played_card.draw(screen, show_back=False)
+            self.player_played_card.draw(screen, show_back=False, speed_multiplier=self.speed_multiplier)
         if self.computer_played_card:
-            self.computer_played_card.draw(screen, show_back=False)
+            self.computer_played_card.draw(screen, show_back=False, speed_multiplier=self.speed_multiplier)
 
         computer_remaining = len(self.computer_deck)
         computer_text = f"{computer_remaining}"
@@ -265,6 +444,7 @@ class Table:
             return
         self.player_played_card = self.player_deck[-1]
         self.player_played_card.is_face_up = True
+        self.player_played_card.enable_wave = False
         self.player_played_card.start_animation(self.center_x - 100, self.center_y, 300)
         self.player_deck.pop()
         if self.computer_played_card is not None:
@@ -360,27 +540,37 @@ class Table:
 
     def update(self, current_time: int) -> None:
         if self.game_phase == "computer_turn":
-            if current_time - self.computer_timer > 800:
+            delay = int(800 / self.speed_multiplier)
+            if current_time - self.computer_timer > delay:
                 self.play_computer_card()
         elif self.game_phase == "comparing":
             if self.player_played_card and self.computer_played_card:
                 if self.player_played_card.is_animation_finished() and self.computer_played_card.is_animation_finished():
-                    if current_time - self.comparison_timer > 500:
+                    delay = int(500 / self.speed_multiplier)
+                    if current_time - self.comparison_timer > delay:
                         self.compare_and_scale_cards()
         elif self.game_phase == "scaling":
             player_done = self.player_played_card.is_scale_animation_finished()
             computer_done = self.computer_played_card.is_scale_animation_finished()
             if player_done and computer_done:
-                if current_time - self.scale_timer > 400:
+                delay = int(400 / self.speed_multiplier)
+                if current_time - self.scale_timer > delay:
                     self.collect_cards()
         elif self.game_phase == "collecting":
-            if current_time - self.collect_timer > 500:
+            delay = int(500 / self.speed_multiplier)
+            if current_time - self.collect_timer > delay:
                 self.finish_collecting()
+
+    def set_speed(self, multiplier: float) -> None:
+        self.speed_multiplier = multiplier
 
 pygame.init()
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Drunkard")
 clock = pygame.time.Clock()
+
+#играет музыка
+music_player = MusicPlayer()
 
 my_deck = Deck()
 player_deck, computer_deck = my_deck.divide()
@@ -388,6 +578,36 @@ game_table = Table(player_deck, computer_deck)
 
 pygame.font.init()
 font = pygame.font.SysFont(None, 36)
+
+#задаем кнопки
+button_width = 50
+button_height = 50
+button_spacing = 10
+
+#кнопки скорости
+speed_button_x = width - button_width * 3 - 20 - (button_spacing * 2)
+speed_button_y = height - button_height - 20
+
+speed_buttons = [
+    SpeedButton(speed_button_x + i * (button_width + button_spacing), speed_button_y, 
+                button_width, button_height, f"{multiplier}x", multiplier)
+    for i, multiplier in enumerate([1.0, 1.5, 2.0])
+]
+speed_buttons[0].set_active(True)  #изначально скорость х1
+
+#кнопки музыки
+music_button_x = 20
+music_button_y = height - button_height - 20
+prev_button = MusicButton(music_button_x, music_button_y, 
+                         button_width, button_height,
+                         "Music_Prev_Idle.png", "Music_Prev_Pushed.png", "prev")
+pause_button = MusicButton(music_button_x + button_width + button_spacing, music_button_y,
+                          button_width, button_height,
+                          "Pause_Idle.png", "Pause_Pused.png", "pause")
+next_button = MusicButton(music_button_x + (button_width + button_spacing) * 2, music_button_y,
+                         button_width, button_height,
+                         "Music_Next_Idle.png", "Music_Next_Pushed.png", "next")
+music_player.update_button_states(pause_button)
 
 running = True
 dragged_card = None
@@ -399,9 +619,38 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        
+        #кнопки скорости
+        for button in speed_buttons:
+            if button.handle_event(event):
+                for btn in speed_buttons:
+                    btn.set_active(False)
+                button.set_active(True)
+                game_table.set_speed(button.speed_multiplier)
+        
+        #кнопки музыки
+        if prev_button.handle_event(event):
+            music_player.prev_track()
+            music_player.update_button_states(pause_button)
+        
+        if pause_button.handle_event(event):
+            music_player.toggle_play_pause()
+            music_player.update_button_states(pause_button)
+        
+        if next_button.handle_event(event):
+            music_player.next_track()
+            music_player.update_button_states(pause_button)
+        
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = event.pos
-            if game_table.game_phase == "waiting_for_player" and game_table.player_cards:
+            clicked_on_button = False
+            all_buttons = speed_buttons + [prev_button, pause_button, next_button]
+            for button in all_buttons:
+                if button.rect.collidepoint(mouse_x, mouse_y):
+                    clicked_on_button = True
+                    break
+            #тут вроде анимация волны у карт
+            if not clicked_on_button and game_table.game_phase == "waiting_for_player" and game_table.player_cards:
                 last_card = game_table.player_cards[-1]
                 if last_card.rect.collidepoint(mouse_x, mouse_y):
                     last_card.dragging = True
@@ -411,6 +660,8 @@ while running:
         if event.type == pygame.MOUSEBUTTONUP:
             if dragged_card and game_table.game_phase == "waiting_for_player":
                 dragged_card.dragging = False
+                dragged_card.base_x = dragged_card.rect.x
+                dragged_card.base_y = dragged_card.rect.y
                 game_table.play_player_card()
                 dragged_card = None
         if event.type == pygame.MOUSEMOTION:
@@ -423,6 +674,15 @@ while running:
 
     screen.fill(background_color)
     game_table.show_cards(screen)
+    
+    #рисуем кнопки
+    for button in speed_buttons:
+        button.draw(screen)
+    
+    prev_button.draw(screen)
+    pause_button.draw(screen)
+    next_button.draw(screen)
+    
     pygame.display.flip()
     clock.tick(fps)
 
