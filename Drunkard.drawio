@@ -1,0 +1,111 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="wv-xLvvp3IkxjPaRNXi5" name="Страница-2">
+    <mxGraphModel dx="2254" dy="1787" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-1" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Table" vertex="1">
+          <mxGeometry height="600" width="210" x="480" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-2" parent="gbxbjX_tDulfrhGh7LFB-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="player_deck: List[Card]&lt;div&gt;computer_deck: List[Card]&lt;br&gt;&lt;div&gt;computer_cards: List[Card]&lt;/div&gt;&lt;/div&gt;&lt;div&gt;player_cards: List[Card]&lt;/div&gt;&lt;div&gt;overlap_offset: int&lt;/div&gt;&lt;div&gt;&lt;div&gt;player_played_card: Card&lt;/div&gt;&lt;div&gt;computer_played_card: Card&lt;/div&gt;&lt;div&gt;computer_turn: bool&lt;/div&gt;&lt;div&gt;computer_timer: int&lt;/div&gt;&lt;div&gt;comparison_timer: int&lt;/div&gt;&lt;div&gt;scale_timer: int&lt;/div&gt;&lt;div&gt;collect_timer: int&lt;/div&gt;&lt;div&gt;game_phase: str&lt;/div&gt;&lt;div&gt;computer_y: int&lt;/div&gt;&lt;div&gt;player_y: int&lt;/div&gt;&lt;div&gt;center_x: int&lt;/div&gt;&lt;div&gt;center_y: int&lt;/div&gt;&lt;div&gt;under_computer_x: int&lt;/div&gt;&lt;div&gt;under_computer_y: int&lt;/div&gt;&lt;div&gt;under_player_x: int&lt;/div&gt;&lt;div&gt;under_player_y: int&lt;/div&gt;&lt;div&gt;speed_multiplier: float&lt;/div&gt;&lt;div&gt;wave_time: float&lt;/div&gt;&lt;div&gt;wave_amplitude: int&lt;/div&gt;&lt;div&gt;wave_speed: float&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="384" width="210" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-3" parent="gbxbjX_tDulfrhGh7LFB-1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="210" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-4" parent="gbxbjX_tDulfrhGh7LFB-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="refresh_decks: None&lt;div&gt;update_wave_animation: None&lt;/div&gt;&lt;div&gt;show_cards(screen: pygame.Surface): None&lt;/div&gt;&lt;div&gt;play_player_cards: None&lt;/div&gt;&lt;div&gt;play_computer_cards: None&lt;/div&gt;&lt;div&gt;compare_and_scale_cards: None&lt;/div&gt;&lt;div&gt;collect_cards: None&lt;/div&gt;&lt;div&gt;finish_collecting: None&lt;/div&gt;&lt;div&gt;update(current_time: int): None&lt;/div&gt;&lt;div&gt;set_speed(multiplier: float): None&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="182" width="210" y="418" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-17" edge="1" parent="1" source="gbxbjX_tDulfrhGh7LFB-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="gbxbjX_tDulfrhGh7LFB-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-5" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Music" vertex="1">
+          <mxGeometry height="240" width="250" x="875" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-6" parent="gbxbjX_tDulfrhGh7LFB-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="tracks = list[]&lt;div&gt;current_track_index: int&lt;/div&gt;&lt;div&gt;is_playing: bool&lt;/div&gt;&lt;div&gt;is_paused: bool&lt;/div&gt;&lt;div&gt;volume: int&lt;/div&gt;" vertex="1">
+          <mxGeometry height="84" width="250" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-7" parent="gbxbjX_tDulfrhGh7LFB-5" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-8" parent="gbxbjX_tDulfrhGh7LFB-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="load_track(index: int): None&lt;div&gt;play(): None&lt;/div&gt;&lt;div&gt;pause(): None&lt;/div&gt;&lt;div&gt;next_track(): None&lt;/div&gt;&lt;div&gt;prev_track(): None&lt;/div&gt;&lt;div&gt;toggle_play_pause(): None&lt;/div&gt;&lt;div&gt;update_button_states(pause_button): None&lt;/div&gt;" vertex="1">
+          <mxGeometry height="122" width="250" y="118" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-20" edge="1" parent="1" source="gbxbjX_tDulfrhGh7LFB-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="gbxbjX_tDulfrhGh7LFB-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="350" />
+              <mxPoint x="760" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-9" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Buttons" vertex="1">
+          <mxGeometry height="500" width="300" x="850" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-10" parent="gbxbjX_tDulfrhGh7LFB-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="x: int&lt;div&gt;&lt;div&gt;y: int&amp;nbsp;&lt;/div&gt;&lt;div&gt;width: int&lt;/div&gt;&lt;div&gt;height: int&lt;/div&gt;&lt;div&gt;idle_image: str pushed_image: str&amp;nbsp;&lt;/div&gt;&lt;div&gt;action: str&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;rect: pygame.Rect&lt;/div&gt;&lt;div&gt;action: str&lt;/div&gt;&lt;div&gt;is_pushed: bool&lt;/div&gt;&lt;div&gt;idle_image: pygame.Surface&lt;/div&gt;&lt;div&gt;pushed_image: pygame.Surface&lt;/div&gt;&lt;div&gt;current_image: pygame.Surface&lt;/div&gt;&lt;div&gt;pressed_timer: int&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="204" width="300" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-11" parent="gbxbjX_tDulfrhGh7LFB-9" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="300" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-12" parent="gbxbjX_tDulfrhGh7LFB-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="draw(screen: pygame.Surface): None&lt;div&gt;handle_event(event: pygame.event.Event): bool&lt;br&gt;&lt;div&gt;set_idle_image(image_path: str): None&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;class SpeedButton {&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;rect: pygame.Rect&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; text: str&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; speed_multiplier: float&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; is_active: bool&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; color_normal: Tuple&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; color_hover: Tuple&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; color_active: Tuple&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; current_color: Tuple&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; font: pygame.Font&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;draw(screen: pygame.Surface): None&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;handle_event(event: pygame.event.Event): bool&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;set_idle_image(&lt;/span&gt;&lt;span style=&quot;background-color: transparent;&quot;&gt;image_path: str&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;): None&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="262" width="300" y="238" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-13" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Card" vertex="1">
+          <mxGeometry height="690" width="360" x="-30" y="400" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-14" parent="gbxbjX_tDulfrhGh7LFB-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="value: str&amp;nbsp;&lt;div&gt;suit: str&amp;nbsp;&lt;/div&gt;&lt;div&gt;rank: int&lt;/div&gt;&lt;div&gt;suit_index: int&lt;/div&gt;&lt;div&gt;value_index: int&lt;/div&gt;&lt;div&gt;&lt;div&gt;sprite: pygame.Surface&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;rect: pygame.Rect&lt;/span&gt;&lt;/div&gt;&lt;div&gt;is_face_up: bool&lt;/div&gt;&lt;div&gt;dragging: bool&lt;/div&gt;&lt;div&gt;drag_offset_x: int&lt;/div&gt;&lt;div&gt;drag_offset_y: int&lt;/div&gt;&lt;div&gt;is_played: bool&lt;/div&gt;&lt;div&gt;animation_progress: float&lt;/div&gt;&lt;div&gt;animation_start_x: int&lt;/div&gt;&lt;div&gt;animation_start_y: int&lt;/div&gt;&lt;div&gt;animation_target_x: int&lt;/div&gt;&lt;div&gt;animation_target_y: int&lt;/div&gt;&lt;div&gt;animation_duration: int&lt;/div&gt;&lt;div&gt;animation_start_time: int&lt;/div&gt;&lt;div&gt;scale: float&lt;/div&gt;&lt;div&gt;scale_target: float&lt;/div&gt;&lt;div&gt;scale_start: float&lt;/div&gt;&lt;div&gt;scale_animation_start: int&lt;/div&gt;&lt;div&gt;center_x: int&lt;/div&gt;&lt;div&gt;center_y: int&lt;/div&gt;&lt;div&gt;wave_offset: int&lt;/div&gt;&lt;div&gt;base_x: int&lt;/div&gt;&lt;div&gt;base_y: int&lt;/div&gt;&lt;div&gt;enable_wave: bool&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="434" width="360" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-15" parent="gbxbjX_tDulfrhGh7LFB-13" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="360" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-16" parent="gbxbjX_tDulfrhGh7LFB-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;set_sprite(sprite_sheet: pygame.Surface, card_width: int, card_height: int)&lt;/div&gt;&lt;div&gt;set_position(x: int, y: int)&lt;/div&gt;&lt;div&gt;start_animation(target_x: int, target_y: int, duration_ms: int)&lt;/div&gt;&lt;div&gt;start_scale_animation(target_scale: float)&lt;/div&gt;&lt;div&gt;is_scale_animation_finished(): bool&lt;/div&gt;&lt;div&gt;update_animation(speed_multiplier: float)&lt;/div&gt;&lt;div&gt;update_wave(time: float, index: int, total_cards: int, wave_amplitude: int, wave_speed: float)&lt;/div&gt;&lt;div&gt;is_animation_finished(): bool&lt;/div&gt;&lt;div&gt;get_scaled_sprite(): pygame.Surface&lt;/div&gt;&lt;div&gt;get_sprite_back(suit_indices: int): pygame.Surface&lt;/div&gt;&lt;div&gt;draw(screen: pygame.Surface, show_back: bool, speed_multiplier: float)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="222" width="360" y="468" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-28" edge="1" parent="1" source="gbxbjX_tDulfrhGh7LFB-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="gbxbjX_tDulfrhGh7LFB-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-29" edge="1" parent="1" source="gbxbjX_tDulfrhGh7LFB-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" target="gbxbjX_tDulfrhGh7LFB-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-24" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Deck" vertex="1">
+          <mxGeometry height="240" width="210" x="45" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-25" parent="gbxbjX_tDulfrhGh7LFB-24" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;deck: List[Card]&lt;/div&gt;&lt;div&gt;suits: List[str]&lt;/div&gt;&lt;div&gt;suit_indices: Dict&lt;/div&gt;&lt;div&gt;values: List[str]&lt;/div&gt;&lt;div&gt;ranks: List[int]&lt;/div&gt;&lt;div&gt;value_indices: Dict&lt;/div&gt;" vertex="1">
+          <mxGeometry height="104" width="210" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-26" parent="gbxbjX_tDulfrhGh7LFB-24" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="210" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-27" parent="gbxbjX_tDulfrhGh7LFB-24" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;create_deck_objects()&lt;/div&gt;&lt;div&gt;shuffle()&lt;/div&gt;&lt;div&gt;divide(): Tuple[List[Card], List[Card]]&lt;/div&gt;" vertex="1">
+          <mxGeometry height="102" width="210" y="138" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-30" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="2" vertex="1">
+          <mxGeometry height="30" width="60" x="240" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-31" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1" vertex="1">
+          <mxGeometry height="30" width="60" x="110" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-32" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;*&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="110" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-34" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1" vertex="1">
+          <mxGeometry height="30" width="60" x="430" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-36" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1" vertex="1">
+          <mxGeometry height="30" width="60" x="680" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-37" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3" vertex="1">
+          <mxGeometry height="30" width="60" x="800" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-38" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="3" vertex="1">
+          <mxGeometry height="30" width="60" x="950" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="gbxbjX_tDulfrhGh7LFB-39" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 13px;&quot;&gt;*&lt;/font&gt;" vertex="1">
+          <mxGeometry height="30" width="60" x="950" y="640" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
